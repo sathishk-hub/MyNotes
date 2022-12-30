@@ -1,12 +1,15 @@
-#!/usr/bin/env node
+import debug from "debug";
 
 /**
- * Module dependencies.
+ * Standard Response formation.
  */
-
-import debug from "debug";
-import { createServer } from "http";
-import app from "../app.js";
+function getStandardResponse({ status, message, data }) {
+  return {
+    status,
+    message,
+    data,
+  };
+}
 
 /**
  * Normalize a port into a number, string, or false.
@@ -29,23 +32,10 @@ function normalizePort(val) {
 }
 
 /**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
-const server = createServer(app);
-
-/**
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error, port) {
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -67,16 +57,10 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening(server) {
   const addr = server.address();
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
 }
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+export { getStandardResponse, normalizePort, onError, onListening };
