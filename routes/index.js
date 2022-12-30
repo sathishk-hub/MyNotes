@@ -1,10 +1,17 @@
 import { Router } from "express";
+import * as helper from "../public/utils/helper.js";
 
 const router = Router();
 
 /* GET home page. */
 router.get("/", (_req, res) => {
-  res.render("index", { title: "Express" });
+  res.json(
+    helper.getStandardResponse({
+      status: true,
+      message: null,
+      data: { title: "sathish" },
+    })
+  );
 });
 
 export default router;
