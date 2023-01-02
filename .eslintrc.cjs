@@ -11,6 +11,8 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    camelcase: "off",
+    "no-underscore-dangle": ["error", { allow: ["_id"] }],
     "global-require": "off",
     "no-use-before-define": [
       "error",

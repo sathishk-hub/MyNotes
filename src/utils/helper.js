@@ -3,7 +3,7 @@ import debug from "debug";
 /**
  * Standard Response formation.
  */
-function getStandardResponse({ status, message, data }) {
+function getStandardResponse({ status = false, message = "", data = {} }) {
   return {
     status,
     message,

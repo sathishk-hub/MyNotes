@@ -7,10 +7,10 @@ import express, { json, urlencoded } from "express";
 import { createServer } from "http";
 import createError from "http-errors";
 import logger from "morgan";
+import mongoose from "mongoose";
 
-import * as helper from "./src/utils/helper.js";
-import indexRouter from "./src/routes/index.js";
 import usersRouter from "./src/routes/users.js";
+import * as helper from "./src/utils/helper.js";
 
 dotenv.config();
 const port = helper.normalizePort(process.env.PORT || "3000");
@@ -22,8 +22,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/user", usersRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
@@ -45,6 +44,18 @@ app.use((err, req, res) => {
  */
 
 app.set("port", port);
+
+mongoose.set("strictQuery", false);
+mongoose.connect(
+  process.env.MONGODB_URL,
+  {
+    useNewUrlParser: true,
+  },
+  (err) => {
+    if (err) throw err;
+    console.log("connected to MongoDB");
+  }
+);
 
 /**
  * Create HTTP server.
